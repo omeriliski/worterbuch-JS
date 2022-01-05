@@ -1,5 +1,5 @@
-$(".navbar-container").load("navbar.html");
-$(".table-container").load("table.html");
+$(".navbar-container").load("./components/navbar.html");
+$(".table-container").load("./components/table.html");
 const inputGerman = document.querySelector("#german");
 const inputTurkish = document.querySelector("#turkish");
 const inputSentence = document.querySelector("#sentence");

@@ -9,7 +9,7 @@
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
 </head>
-<body class="bg-gray-300">
+<body class="bg-gray-200">
     <div class="navbar-container"></div>
     <div class="cards-container border w-2/3 m-auto relative">
         <div id="card-container-1" class="card-container-1 flex justify-center mt-40 absolute inset-0 z-10 opacity-100 cursor-pointer"></div>
@@ -19,14 +19,14 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
-    <script src="../firebase.js"></script>
+    <script src="firebase.js"></script>
     <script>
-        $(".navbar-container").load("navbar.html");
-        $(".card-container-1").load("card.html");
+        $(".navbar-container").load("./components/navbar.html");
+        $(".card-container-1").load("./components/card.html");
         // word["0"].innerHTML="a"
         //console.log('card2 :>> ', card2); 
-        $(".card-container-2").load("card.html");
-        $(".card-container-3").load("card.html");
+        $(".card-container-2").load("./components/card.html");
+        $(".card-container-3").load("./components/card.html");
         window.addEventListener('load', function () {
             getWords.then(()=>{
                 createCards();

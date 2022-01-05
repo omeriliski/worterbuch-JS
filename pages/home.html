@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
 </head>
 
-<body onload="setTable()">
+<body>
     <div class="navbar-container"></div>
     <div class=" mt-10 ml-10">
         <input class="pl-2 p-1 border border-indigo-600 rounded mr-5 w-1/5 w-1/5" type="text" name="" id="german">
@@ -27,6 +27,11 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
     
     <script src="../firebase.js"></script>
+    <script>
+        window.addEventListener('load', function () {
+            getWords.then(()=>setTable())
+        })
+        </script>
 </body>
 
 </html>

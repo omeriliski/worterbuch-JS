@@ -28,8 +28,10 @@
         $(".card-container-2").load("card.html");
         $(".card-container-3").load("card.html");
         window.addEventListener('load', function () {
-            addToCard();
-            listenCheckButton();
+            getWords.then(()=>{
+                createCards();
+                listenCheckButton();
+            });
         })
     </script>
 </body>

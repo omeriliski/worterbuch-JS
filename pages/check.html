@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+</head>
+<body>
+    <div class="navbar-container"></div>
+    <div class="cards-container border w-2/3 m-auto relative">
+        <div id="card-container-1" class="card-container-1 flex justify-center mt-40 absolute inset-0 z-10 opacity-100 cursor-pointer"></div>
+        <div id="card-container-2" class="card-container-2 flex justify-center mt-40 absolute inset-y-0 left-0 opacity-50 cursor-pointer"></div>
+        <div id="card-container-3" class="card-container-3 flex justify-center mt-40 absolute inset-y-0 right-0 opacity-50 cursor-pointer"></div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
+    <script src="../firebase.js"></script>
+    <script>
+        $(".navbar-container").load("navbar.html");
+        $(".card-container-1").load("card.html");
+        // word["0"].innerHTML="a"
+        //console.log('card2 :>> ', card2); 
+        $(".card-container-2").load("card.html");
+        $(".card-container-3").load("card.html");
+        window.addEventListener('load', function () {
+            addToCard();
+        })
+    </script>
+</body>
+</html>

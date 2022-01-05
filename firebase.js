@@ -1,6 +1,6 @@
-$(".navbar-container").load("navbar.html");
 // $(".table-body").load("tr.html");
 // document.querySelector(".navbar-container").load("navbar.html");
+$(".navbar-container").load("navbar.html");
 $(".table-container").load("table.html");
 const inputGerman = document.getElementById("german");
 const inputTurkish = document.getElementById("turkish");
@@ -8,7 +8,8 @@ const inputSentence = document.getElementById("sentence");
 
 
 let wordsArr;
-let cardNo=2;
+let usersArr;
+let cardNo=1;
 
 //initialize firebase
 const firebaseConfig = {
@@ -24,6 +25,50 @@ firebase.initializeApp(firebaseConfig);
 //initialize variables
 
 const cloudDB = firebase.firestore();
+
+// const getUsers= new Promise((resolve,reject)=>{
+//   usersArr=[]
+//   cloudDB.collection("users").get()
+//   .then(res=>{
+//     res.docs.forEach(doc => {
+//       const usersData = doc.data();
+//       usersData["documentId"]=doc.ref.id;
+//       usersArr.push(usersData);
+//     })
+//     //console.log('usersArr :>> ', usersArr);
+//     resolve(usersArr)
+//   })
+//   .catch(err=>reject(err)) 
+// }) 
+
+// const checkUser=()=>{
+//   getUsers
+//   .then(res=>{
+//     const email=document.querySelector("#email-address").value;
+//     const password=document.querySelector("#password").value;
+//     console.log('email :>> ', email);
+//     console.log('password :>> ', password);
+//   })
+// }
+
+// document.querySelector("#signin-button").addEventListener("click",()=>{
+//     checkUser();
+// })
+
+
+//to get as JSON data
+// const getData =()=>{
+//   const docRef = cloudDB.collection("words").doc("0gjzJuGWbOHdVuxq8LF2")
+//   docRef.get().then((doc) => {
+//     const data = doc.data();
+//     console.log('data :>> ', data);
+//   })
+//   .catch(err=>console.log('err :>> ', err))
+// }
+// getData();
+
+
+
 const saveWord = () => {
   if(inputGerman.value.length !=0 && inputTurkish.value.length !=0 && inputSentence.value.length !=0){
     const data={
@@ -40,9 +85,6 @@ const saveWord = () => {
       inputSentence.value="";
       addRow(data);
       document.location.reload(true)
-      // const tableRow = document.getElementById("table-row");
-      // const clone = tableRow.cloneNode(true);
-      // document.getElementsByClassName("table-body")[0].appendChild(clone);
     }).catch((err) => {
       console.log('save err :>> ', err);
     });
@@ -92,15 +134,14 @@ function GetSortOrder(prop) {
       }    
       return 0;    
   }    
-}
+} 
+
 
 const getWords=new Promise((resolve,reject)=>{
   wordsArr=[];
   cloudDB.collection("words").get()
   .then(res=>{
     res.docs.forEach(doc => {
-      //addRow(doc.data());
-      console.log('doc :>> ', doc.ref.id);
       const data=doc.data();
       data["documentId"]=doc.ref.id;
       wordsArr.push(data);
@@ -108,30 +149,26 @@ const getWords=new Promise((resolve,reject)=>{
     })
     resolve(wordsArr)
   })
-  .catch(err=>reject(err))
-
-  
+  .catch(err=>reject(err))  
 })
 
 const setTable = ()=>{
     getWords
     .then(res=>{
-      // console.log('res :>> ', res);
       res.forEach(e=>{
         addRow(e)
       })
       const row = document.getElementById("table-row").classList.add("hidden");
-      console.log('row :>> ', row);
     })
-  // document.getElementById("table-row").classList.add("hidden");
-  //document.getElementsByClassName("table-row").item(0).classList.add("hidden")
-  //console.log('row :>> ', row.item(0));
 }
 const addStarToCard=()=>{
-  const ratingCard=document.getElementById("card-container-1").getElementsByClassName("rating-card")[0]
+  let ratingCard=document.getElementById("card-container-1").getElementsByClassName("rating-card")[0]
   let rating = document.createElement("i");
   rating.classList.add("text-yellow-500","fas","fa-star");
   ratingCard.appendChild(rating);
+  // console.log('ratingCard :>> ', ratingCard);  
+  console.log('rating :>> ', rating);
+  rating="";
 }
 const deleteStartFromCard=()=>{
   const ratingCard=document.getElementById("card-container-1").getElementsByClassName("rating-card")[0]
@@ -139,25 +176,27 @@ const deleteStartFromCard=()=>{
 }
 
 
-const compare=(res,inputValue)=>{
-  if(res[cardNo].turkish==inputValue){
+const compare=(inputValue)=>{
+  console.log('compare  wordsArr:>> ', wordsArr);
+  if(wordsArr[cardNo].turkish==inputValue){
     console.log('bravo :>> ')
-    if(res[cardNo].rating<5){
-      res[cardNo].rating++
+    if(wordsArr[cardNo].rating<5){
+      wordsArr[cardNo].rating++
       addStarToCard()
     }
-    
   }
   else {
     console.log('leider :>> ');
-    if(res[cardNo].rating>0){
-      res[cardNo].rating--
+    if(wordsArr[cardNo].rating>0){
+      wordsArr[cardNo].rating--
       deleteStartFromCard();
     }
   }
-  cloudDB.collection("words").doc(res[cardNo].documentId).update(res[cardNo]);
+  cloudDB.collection("words").doc(wordsArr[cardNo].documentId).update(wordsArr[cardNo]);
   // const checkButton = document.getElementById("card-container-1").getElementsByClassName("check-button")[0].classList.add("hidden")
 }
+
+
 
 const addToCard=()=>{
   getWords
@@ -174,18 +213,12 @@ const addToCard=()=>{
     const ratingCard=document.getElementById("card-container-1").getElementsByClassName("rating-card")[0]
     ratingCard.innerHTML=""
     
-    const checkButton = document.getElementById("card-container-1").getElementsByClassName("check-button")[0]
     // checkButton.classList.remove("hidden")
-    checkButton.addEventListener("click",()=>{
-    const inputValue = document.getElementById("card-container-1").getElementsByClassName("input-value")[0].value
-    compare(res,inputValue);
-    })
+
+    
 
     for (let i = 0; i < res[cardNo].rating; i++) {
       addStarToCard()
-      // let rating = document.createElement("i");
-      // rating.classList.add("text-yellow-500","fas","fa-star");
-      // ratingCard.appendChild(rating);
     }
     //ratingCard=null;
 
@@ -223,7 +256,7 @@ document.getElementById("card-container-3").addEventListener("click",()=>{
     }
     if(cardNo+1==res.length) document.getElementById("card-container-3").classList.add("hidden");
     document.getElementById("card-container-2").classList.remove("hidden");
-    addToCard(res);
+    addToCard();
   })
   console.log('cardNo 3:>> ', cardNo);
 })
@@ -236,12 +269,22 @@ document.getElementById("card-container-2").addEventListener("click",()=>{
   addToCard();
 })
 
-
-
-
-const checkWord=()=>{
-
+//listen the check button
+const listenCheckButton=()=>{
+  console.log('listening :>> ');
+  let checkButton = document.getElementById("card-container-1").getElementsByClassName("check-button")[0]
+  console.log('checkButton :>> ',checkButton);
+  checkButton.addEventListener("click",()=>{
+  // getWords
+  //   .then(res=>{
+  const inputValue = document.getElementById("card-container-1").getElementsByClassName("input-value")[0].value
+  console.log('checkButton :>> ', checkButton); 
+  compare(inputValue);
+  console.log('called compare :>> ');
+  // })
+  })
 }
+
 // console.log('firebase :>> ', firebase);
         // let header = document.getElementsByClassName("test");
         // let dbRef = firebase.database().ref().child("text");

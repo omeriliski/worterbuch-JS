@@ -1,9 +1,8 @@
 $(".navbar-container").load("navbar.html");
 $(".table-container").load("table.html");
-const inputGerman = document.getElementById("german");
-const inputTurkish = document.getElementById("turkish");
-const inputSentence = document.getElementById("sentence");
-
+const inputGerman = document.querySelector("#german");
+const inputTurkish = document.querySelector("#turkish");
+const inputSentence = document.querySelector("#sentence");
 
 let wordsArr;
 let usersArr;
@@ -96,7 +95,6 @@ const saveWord = () => {
         inputSentence.value = "";
         data.documentId=docRef.id;
         wordsArr.push(data);
-        console.log('saveWord wordsArr :>> ', wordsArr);
         setTable()
       }).catch((err) => {
         console.log('save err :>> ', err);
@@ -108,7 +106,6 @@ const deleteWord = (data) => {
   cloudDB.collection("words").doc(data.documentId).delete()
   .then(()=>{
     getWords
-    console.log('deleted :>> ');
   })  //update the wordsArr
   .catch(err=>console.log('deleteWord err :>> ', err))
 }
@@ -154,8 +151,7 @@ const setTable = () => {
   //addeventlistener to delete buttons
   wordsArr.forEach(word=>{
       document.querySelector(`#delete-word-${word.id}`).addEventListener("click",()=>{
-        wordsArr = wordsArr.filter(e=> e != word)
-        console.log('delete wordsArr:>> ',wordsArr);
+        wordsArr = wordsArr.filter(e=> e != word);
         deleteWord(word);
         setTable();
       })
@@ -178,7 +174,6 @@ const addStarToCard = () => {
   let rating = document.createElement("i");
   rating.classList.add("text-yellow-500", "fas", "fa-star");
   ratingCard.appendChild(rating);
-  console.log('rating :>> ', rating);
   rating = "";
 }
 const deleteStarFromCard = () => {
@@ -205,14 +200,15 @@ const compare = (inputValue) => {
 }
 
 
-const addCard = (cardDiv, no) => {
-  const germanCardWord = document.getElementById(cardDiv).getElementsByClassName("german-card-word")[0]
+const addCard = (cardDivId, no) => {
+  const cardDiv=document.getElementById(cardDivId)
+  const germanCardWord = cardDiv.getElementsByClassName("german-card-word")[0]
   germanCardWord.innerHTML = wordsArr[no].german
 
-  const turkishCardWord = document.getElementById(cardDiv).getElementsByClassName("turkish-card-word")[0]
+  const turkishCardWord = cardDiv.getElementsByClassName("turkish-card-word")[0]
   turkishCardWord.innerHTML = wordsArr[no].turkish
 
-  const sentenceCardWord = document.getElementById(cardDiv).getElementsByClassName("sentence-card-word")[0]
+  const sentenceCardWord = cardDiv.getElementsByClassName("sentence-card-word")[0]
   sentenceCardWord.innerHTML = wordsArr[no].sentence
 }
 const createCards = () => {
@@ -229,33 +225,31 @@ const createCards = () => {
   addCard("card-container-3", cardNo + 1);
 }
 
-//listen the cards whether on clicked
+//listen the right card whether on clicked
 document.getElementById("card-container-3").addEventListener("click", () => {
   if (cardNo + 1 < wordsArr.length) cardNo++;
   if (cardNo + 1 == wordsArr.length) document.getElementById("card-container-3").classList.add("hidden");
   document.getElementById("card-container-2").classList.remove("hidden");
   createCards();
 })
-console.log('cardNo 3:>> ', cardNo);
-// })
 
+//listen the left card whether on clicked
 document.getElementById("card-container-2").addEventListener("click", () => {
   if (cardNo > 0) cardNo--;
-  if (cardNo == 0) document.getElementById("card-container-2").classList.add("hidden");
-  document.getElementById("card-container-3").classList.remove("hidden");
-  console.log('cardNo 2:>> ', cardNo);
+  if (cardNo == 0) document.querySelector("#card-container-2").classList.add("hidden");
+  document.querySelector("#card-container-3").classList.remove("hidden");
   createCards();
 })
 
 //listen the check button
 const listenCheckButton = () => {
-  console.log('listening :>> ');
-  let checkButton = document.getElementById("card-container-1").getElementsByClassName("check-button")[0]
-  console.log('checkButton :>> ', checkButton);
+  let checkButton = document.getElementById("card-container-1").getElementsByClassName("check-button")[0];
   checkButton.addEventListener("click", () => {
     const inputValue = document.getElementById("card-container-1").getElementsByClassName("input-value")[0].value
     document.getElementById("card-container-1").getElementsByClassName("input-value")[0].value=""
     compare(inputValue);
+    console.log('wordsArr[cardNo] :>> ', wordsArr[cardNo]);
+    wordsArr = wordsArr.filter(e=>e!=wordsArr[cardNo]);   
   })
 }
 

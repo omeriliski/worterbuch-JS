@@ -7,6 +7,8 @@ const inputSentence = document.querySelector("#sentence");
 let wordsArr;
 let usersArr;
 let cardNo = 1;
+//const activeMenu="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium";
+//const passiveMenu="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
 
 //initialize firebase
 const firebaseConfig = {
@@ -20,7 +22,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 //initialize variables
-
 const cloudDB = firebase.firestore();
 
 // const getUsers= new Promise((resolve,reject)=>{
@@ -106,7 +107,7 @@ const deleteWord = (data) => {
   cloudDB.collection("words").doc(data.documentId).delete()
   .then(()=>{
     getWords
-  })  //update the wordsArr
+  }) 
   .catch(err=>console.log('deleteWord err :>> ', err))
 }
 
@@ -249,7 +250,17 @@ const listenCheckButton = () => {
     document.getElementById("card-container-1").getElementsByClassName("input-value")[0].value=""
     compare(inputValue);
     console.log('wordsArr[cardNo] :>> ', wordsArr[cardNo]);
-    wordsArr = wordsArr.filter(e=>e!=wordsArr[cardNo]);   
+    //wordsArr = wordsArr.filter(e=>e!=wordsArr[cardNo]);   
+  })
+}
+
+//listen menu-item
+const listenMenuItem=(id)=>{
+  console.log('menu :>> ');
+  const element=document.querySelector(id);
+  element.addEventListener("click",()=>{
+    element.classList="";
+    element.classList.add(activeMenu);
   })
 }
 

@@ -11,7 +11,7 @@ let cardNo = 1;
 //const passiveMenu="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
 
 //initialize firebase
-const firebaseConfig = {
+const firebaseConfig = {  
   apiKey: "AIzaSyC-hmHvg3ei-nqf2-tUmG9UmbX04Raiwmk",
   authDomain: "mein-worterbuch-2a463.firebaseapp.com",
   projectId: "mein-worterbuch-2a463",
@@ -170,6 +170,9 @@ function GetSortOrder(prop) {
   }
 }
 
+
+
+// ------------------Check html------------------------------
 const addStarToCard = () => {
   let ratingCard = document.getElementById("card-container-1").getElementsByClassName("rating-card")[0]
   let rating = document.createElement("i");
@@ -226,6 +229,12 @@ const createCards = () => {
   addCard("card-container-3", cardNo + 1);
 }
 
+//turkish-header listener
+// console.log('document.querySelector("#turkish-header") :>> ', document.querySelector("#turkish-header"));
+// document.querySelector("#turkish-header").addEventListener("click",()=>{
+//   console.log('click :>> ');
+// })
+
 //listen the right card whether on clicked
 document.getElementById("card-container-3").addEventListener("click", () => {
   if (cardNo + 1 < wordsArr.length) cardNo++;
@@ -246,8 +255,9 @@ document.getElementById("card-container-2").addEventListener("click", () => {
 const listenCheckButton = () => {
   let checkButton = document.getElementById("card-container-1").getElementsByClassName("check-button")[0];
   checkButton.addEventListener("click", () => {
-    const inputValue = document.getElementById("card-container-1").getElementsByClassName("input-value")[0].value
-    document.getElementById("card-container-1").getElementsByClassName("input-value")[0].value=""
+    const inputElement=document.getElementById("card-container-1").getElementsByClassName("input-value")[0]
+    const inputValue =inputElement.value
+    inputElement.value=""
     compare(inputValue);
     console.log('wordsArr[cardNo] :>> ', wordsArr[cardNo]);
     //wordsArr = wordsArr.filter(e=>e!=wordsArr[cardNo]);   
@@ -263,6 +273,8 @@ const listenMenuItem=(id)=>{
     element.classList.add(activeMenu);
   })
 }
+
+
 
 // console.log('firebase :>> ', firebase);
 // let header = document.getElementsByClassName("test");

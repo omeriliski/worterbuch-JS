@@ -185,19 +185,41 @@ const deleteStarFromCard = () => {
   ratingCard.lastChild.remove();
 }
 
+
+const cardAlert=(id)=>{
+  const myAlert= document.querySelector(id)
+  myAlert.classList.remove("hidden");
+  setTimeout(() => {
+    myAlert.classList.add("hidden")
+    document.querySelector("#turkish-card-word").classList.add("hidden");
+    createCards()
+  }, 4000);
+}
+
+const playAudio=(file)=>{
+  const audio = new Audio(file);
+  audio.play();
+}
 const compare = (inputValue) => {
   console.log('compare  wordsArr:>> ', wordsArr);
+  document.querySelector("#turkish-card-word").classList.remove("hidden");
   if (wordsArr[cardNo].turkish == inputValue) {
-    console.log('bravo :>> ')
+    cardAlert("#rightAlert",true)
+    playAudio("./music/positive.wav")
     if (wordsArr[cardNo].rating < 5) {
       wordsArr[cardNo].rating++
-      addStarToCard()
+      setTimeout(()=>{
+        addStarToCard() 
+      },2000)
     }
   } else {
-    console.log('leider :>> ');
+    cardAlert("#falseAlert",false);
+    playAudio("./music/negative.wav")
     if (wordsArr[cardNo].rating > 0) {
       wordsArr[cardNo].rating--
-      deleteStarFromCard();
+      setTimeout(() => {
+        deleteStarFromCard()
+      }, 2000);
     }
   }
   cloudDB.collection("words").doc(wordsArr[cardNo].documentId).update(wordsArr[cardNo]);
@@ -260,7 +282,8 @@ const listenCheckButton = () => {
     inputElement.value=""
     compare(inputValue);
     console.log('wordsArr[cardNo] :>> ', wordsArr[cardNo]);
-    //wordsArr = wordsArr.filter(e=>e!=wordsArr[cardNo]);   
+    //to delete the card temporarily from the card list
+    wordsArr = wordsArr.filter(e=>e!=wordsArr[cardNo]);  
   })
 }
 
